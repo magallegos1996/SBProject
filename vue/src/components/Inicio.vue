@@ -3,11 +3,13 @@
         <div class="row pt-5 pb-5">
             <div class="col-lg-4 offset-lg-4">
                 <div class="card pt-4">
-                    <label for="image">
-                        <input type="file" name="image" id="image" style="display:none;" @change="onFileChange"/>
-                        <img v-if="image === ''" class="card-img-top img-fluid text-center" @mouseover="hover = true" @mouseleave="hover = false" src="../assets/photo-icon.png" alt="Card image cap">
-                        <img v-else class="card-img-top img-fluid text-center" @mouseover="hover = true" @mouseleave="hover = false" :src="image" alt="Card image cap">
-                    </label>
+                    <div class="container">
+                        <label for="image">
+                            <input type="file" name="image" id="image" style="display:none;" @change="onFileChange"/>
+                            <img v-if="image === ''" class="card-img-top img-fluid text-center" @mouseover="hover = true" @mouseleave="hover = false" src="../assets/photo-icon.png" alt="Card image cap">
+                            <img v-else class="card-img-top img-fluid text-center" @mouseover="hover = true" @mouseleave="hover = false" :src="image" alt="Card image cap">
+                        </label>
+                    </div>
                     <div class="card-body">
                         <h6 class="card-title text-center" v-if="!hover">Ingresa tu nombre</h6>
                         <h6 class="card-title text-center" v-else>Sube una foto tuya</h6>
@@ -81,7 +83,6 @@
         background-color: #1abc9c;
     }
     .card-img-top {
-    //border: 2px solid red;
         border-radius: 25px;
         object-fit: cover;
     }
@@ -101,6 +102,10 @@
     .card-img-top:hover{
         cursor: pointer;
         box-shadow: -1px 6px 35px 3px #0D6C4E;
+    }
+    .container img {
+        width: 288px;
+        height: 288px;
     }
 
 </style>
