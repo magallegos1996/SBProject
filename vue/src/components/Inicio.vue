@@ -12,7 +12,7 @@
                     </div>
                     <div class="card-body">
                         <h6 class="card-title text-center" v-if="!hover">Ingresa tu nombre</h6>
-                        <h6 class="card-title text-center" v-else>Sube una foto tuya</h6>
+                        <h6 class="card-title text-center" v-else>Sube una nueva foto</h6>
                         <form>
                             <div class="row">
                                 <div class="col pb-3">
@@ -40,13 +40,20 @@
                 image: '',
                 imagenSeleccionada: null,
                 formatosValidos : ['image/jpg', 'image/jpeg'],
-                error: ''
+                error: '',
+                imagenValida: false
             }
         },
         methods: {
             validarNombre() {
                 if(this.nombreIngresado.trim() !== 'Stefania Burneo'){
                     this.error = 'No es un nombre válido';
+                }else{
+                    if(this.image === '' || !this.imagenValida) {
+                        this.error = 'Por favor, seleccione una imagen';
+                    }else{
+                        this.empezar();
+                    }
                 }
             },
             onFileChange(e) {
@@ -61,11 +68,14 @@
                     });
                     fileReader.readAsDataURL(file);
                     this.imagenSeleccionada = file;
+                    this.imagenValida = true;
                 }
             },
             validarArchivo(file) {
                 //Validar si es imagen jpg o jpeg
                 return this.formatosValidos.includes(file.type);
+            },
+            empezar(){
 
             }
         }
@@ -88,7 +98,7 @@
     }
     .card-title{
         color: white;
-        font-size: x-large;
+        font-size: 22px;
         font-family: "Arial Black";
     }
     .btn {
