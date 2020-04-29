@@ -69,6 +69,7 @@
                     fileReader.readAsDataURL(file);
                     this.imagenSeleccionada = file;
                     this.imagenValida = true;
+                    this.error = '';
                 }
             },
             validarArchivo(file) {
@@ -76,7 +77,7 @@
                 return this.formatosValidos.includes(file.type);
             },
             empezar(){
-
+                this.$router.push('feed');
             }
         }
     }
