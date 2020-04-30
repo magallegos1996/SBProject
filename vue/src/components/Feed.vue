@@ -1,29 +1,35 @@
 <template>
-    <div>
-        <NavBar></NavBar>
-        <div class="container">
-            <div class="row pt-4">
-                <div class="col-lg-4 pt-3 pb-3" v-for="(publicacion,index) in publicaciones" v-bind:key="index">
-                    <div class="card" style="width: 18rem;">
-                        <div class="container">
-                            <img class="card-img-top img-fluid pt-3" :src="`${publicacion.imagen}`" alt="Card image cap">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{publicacion.titulo}}</h5>
-                            <p class="card-text" id="descripcionImagen">{{publicacion.descripcion}}</p>
-                            <p class="card-text"><small class="text-muted">{{publicacion.fechaSubida}}</small></p>
-                            <p class="card-text"><small class="text-muted">-{{publicacion.subidoPor}}-</small></p>
-                        </div>
+    <div v-if="publicaciones.length === 0">
+        <EmptyFeed/>
+    </div>
+    <div class="container mb-4 mt-4" v-else>
+        <div class="row pt-4">
+            <div class="col-lg-4 pt-3 pb-3" v-for="(publicacion,index) in publicaciones" v-bind:key="index">
+                <div class="card" style="width: 18rem;">
+                    <div class="container">
+                        <img class="card-img-top img-fluid pt-3" :src="`${publicacion.imagen}`" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{publicacion.titulo}}</h5>
+                        <p class="card-text" id="descripcionImagen">{{publicacion.descripcion}}</p>
+                        <p class="card-text"><small class="text-muted">{{publicacion.fechaSubida}}</small></p>
+                        <p class="card-text"><small class="text-muted"><b>Subido por:</b> {{publicacion.subidoPor}} </small></p>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-lg-12 pr-5">
+            <AñadirFotoBtn/>
         </div>
     </div>
 </template>
 
 <script>
 
-    import NavBar from "./NavBar";
+    //import NavBar from "./NavBar";
+    //import UIFab from 'keen-ui/lib/UiFab'
+    import EmptyFeed from "./EmptyState";
+    import AñadirFotoBtn from "./AñadirFotoBtn";
 
     export default {
         name: "Feed",
@@ -34,7 +40,10 @@
             }
         },
         components: {
-            NavBar
+            //NavBar
+           // UIFab,
+            EmptyFeed,
+            AñadirFotoBtn
         },
         mounted() {
             this.$http.get(this.baseURI + '/feed')
@@ -46,6 +55,9 @@
                 .catch(e => console.log(e));
         },
         methods: {
+            irNuevaFoto(){
+                this.$router.push('inicio');
+            }
         }
     }
 </script>
