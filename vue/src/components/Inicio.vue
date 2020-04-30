@@ -123,13 +123,13 @@
                 this.objImagen.imagen = this.image;
                 this.objImagen.descripcion = this.descripcionIngresada.trim();
                 this.objImagen.fechaSubida = this.obtenerFecha();
+                this.objImagen.subidoPor = 'Stefania Burneo';
 
                 //Insercion de nueva imagen
                 this.$http.post(this.baseURI + '/feed', this.objImagen)
                     .then(() => {
                         //Está autenticado
-                        localStorage.setItem('LoggedUser', this.nombreIngresado.trim());
-                        this.objImagen.subidoPor = localStorage.getItem('LoggedUser');
+                        localStorage.setItem('LoggedUser', this.objImagen.subidoPor);
                         console.log('IMAGEN INSERTADA CON ÉXITO');
                         try{
                             this.$router.push('feed'); //Se redirecciona a la pagina FEED
