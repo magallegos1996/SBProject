@@ -69,9 +69,21 @@
         },
         methods: {
             validarNombre() {
-                if(this.nombreIngresado.trim() !== 'Stefania Burneo'){
-                    this.error = 'No es un nombre válido';
-                }else{
+                if(!this.estaAutenticado){
+                    if(this.nombreIngresado.trim() !== 'Stefania Burneo'){
+                        this.error = 'No es un nombre válido';
+                    }else{
+                        if(this.image === '' || !this.imagenValida) {
+                            this.error = 'Por favor, seleccione una imagen';
+                        }else{
+                            if(this.tituloIngresado.trim() === ''){
+                                this.error = 'El título es obligatorio';
+                            }else{
+                                this.empezar();
+                            }
+                        }
+                    }
+                }else {
                     if(this.image === '' || !this.imagenValida) {
                         this.error = 'Por favor, seleccione una imagen';
                     }else{
@@ -106,9 +118,6 @@
             },
             empezar(){
 
-                //Está autenticado
-                localStorage.setItem('LoggedUser', this.nombreIngresado);
-
                 //Construccion objeto
                 this.objImagen.titulo = this.tituloIngresado.trim();
                 this.objImagen.imagen = this.image;
@@ -120,6 +129,8 @@
                 this.$http.post(this.baseURI + '/feed', this.objImagen)
                     .then(() => {
                         console.log('IMAGEN INSERTADA CON ÉXITO');
+                        //Está autenticado
+                        localStorage.setItem('LoggedUser', this.nombreIngresado);
                         try{
                             this.$router.push('feed'); //Se redirecciona a la pagina FEED
                         }catch (e) {
