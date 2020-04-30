@@ -2,7 +2,7 @@
     <div class=" pt-0 pb-0">
         <div class="row pt-1 pb-5">
             <div class="col-lg-4 offset-lg-4">
-                <div class="card pt-4">
+                <div class="card pt-5">
                     <div class="container">
                         <label for="image">
                             <input type="file" name="image" id="image" style="display:none;" @change="onFileChange"/>
@@ -11,16 +11,21 @@
                         </label>
                     </div>
                     <div class="card-body">
-                        <h6 class="card-title text-center" v-if="!hover">Ingresa tu nombre</h6>
+                        <h6 class="card-title text-center" v-if="!hover">¡BIENVENIDA!</h6>
                         <h6 class="card-title text-center" v-else>Sube una nueva foto</h6>
                         <form>
                             <div class="row">
-                                <div class="col pb-3">
-                                    <input v-model="nombreIngresado" type="text" class="form-control" placeholder="Nombre">
+                                <div class="col pb-2" v-if="!estaAutenticado">
+                                    <input v-model="nombreIngresado" type="text" class="form-control" placeholder="Su nombre">
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col pb-3">
+                                <div class="col pb-2">
+                                    <input v-model="tituloIngresado" id="tituloImagen" type="text" class="form-control text-center" placeholder="Título de la foto">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col pb-2">
                                     <textarea v-model="descripcionIngresada" class="form-control" rows="4" placeholder="Descripción (Opcional)"></textarea>
                                 </div>
                             </div>
@@ -38,22 +43,29 @@
 
     import Imagen from '../models/Imagen';
     import dateFormat from 'dateformat'
+    import { AuthService } from "../service/auth.service";
 
     export default {
         name: "Inicio",
         data() {
             return {
+                tituloIngresado: '',
                 nombreIngresado: '',
                 descripcionIngresada: '',
                 hover: false,
                 image: '',
-                imagenSeleccionada: null,
                 formatosValidos : ['image/jpg', 'image/jpeg'],
                 error: '',
                 imagenValida: false,
                 baseURI: 'http://localhost:3000/sb',
-                objImagen: new Imagen()
+                objImagen: new Imagen(),
+                estaAutenticado: false,
             }
+        },
+        mounted() {
+          if(AuthService.isAuth()){
+              this.estaAutenticado = true;
+          }
         },
         methods: {
             validarNombre() {
@@ -63,7 +75,11 @@
                     if(this.image === '' || !this.imagenValida) {
                         this.error = 'Por favor, seleccione una imagen';
                     }else{
-                        this.empezar();
+                        if(this.tituloIngresado.trim() === ''){
+                            this.error = 'El título es obligatorio';
+                        }else{
+                            this.empezar();
+                        }
                     }
                 }
             },
@@ -78,7 +94,6 @@
                         this.image = fileReader.result;
                     });
                     fileReader.readAsDataURL(file);
-                    this.imagenSeleccionada = file;
                     this.imagenValida = true;
                     this.error = '';
 
@@ -90,20 +105,27 @@
                 return this.formatosValidos.includes(file.type);
             },
             empezar(){
+
+                //Está autenticado
+                localStorage.setItem('LoggedUser', this.nombreIngresado);
+
                 //Construccion objeto
+                this.objImagen.titulo = this.tituloIngresado.trim();
                 this.objImagen.imagen = this.image;
                 this.objImagen.descripcion = this.descripcionIngresada.trim();
                 this.objImagen.fechaSubida = this.obtenerFecha();
-                this.objImagen.subidoPor = this.nombreIngresado;
-
-                console.log('ESTO ES EL OBJIMG');
-                console.log(this.objImagen);
+                this.objImagen.subidoPor = this.nombreIngresado.trim();
 
                 //Insercion de nueva imagen
                 this.$http.post(this.baseURI + '/feed', this.objImagen)
                     .then(() => {
                         console.log('IMAGEN INSERTADA CON ÉXITO');
-                        this.$router.push('feed');
+                        try{
+                            this.$router.push('feed'); //Se redirecciona a la pagina FEED
+                        }catch (e) {
+                            console.log(e);
+                        }
+
                     })
                     .catch(e => console.log('Error al insertar imagen' + e));
             },
@@ -151,6 +173,13 @@
     }
     textarea{
         resize: none;
+    }
+    ::placeholder {
+        font-size: 13px;
+        opacity: 0.6;
+    }
+    #tituloImagen{
+        font-weight: bold;
     }
 
 </style>

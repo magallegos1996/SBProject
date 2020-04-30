@@ -1,18 +1,19 @@
-
 <template>
     <div>
         <NavBar></NavBar>
         <div class="container">
             <div class="row pt-4">
-                <div class="col-md-3 pt-3 pb-3" v-for="(publicacion,index) in publicaciones" v-bind:key="index">
+                <div class="col-lg-4 pt-3 pb-3" v-for="(publicacion,index) in publicaciones" v-bind:key="index">
                     <div class="card" style="width: 18rem;">
                         <div class="container">
-                            <img class="card-img-top img-fluid text-center pt-3" :src="`${publicacion.imagen}`" alt="Card image cap">
+                            <img class="card-img-top img-fluid pt-3" :src="`${publicacion.imagen}`" alt="Card image cap">
                         </div>
                         <div class="card-body">
-                            <p class="card-text">{{publicacion.descripcion}}</p>
+                            <h5 class="card-title">{{publicacion.titulo}}</h5>
+                            <p class="card-text" id="descripcionImagen">{{publicacion.descripcion}}</p>
+                            <p class="card-text"><small class="text-muted">{{publicacion.fechaSubida}}</small></p>
+                            <p class="card-text"><small class="text-muted">-{{publicacion.subidoPor}}-</small></p>
                         </div>
-                        <small class="card-footer text-muted text-center">{{publicacion.fechaSubida}}</small>
                     </div>
                 </div>
             </div>
@@ -45,7 +46,6 @@
                 .catch(e => console.log(e));
         },
         methods: {
-
         }
     }
 </script>
@@ -65,9 +65,7 @@
         box-shadow: -1px 6px 35px 3px darkgray;
         border: 1px solid #1abc9c;
     }
-    .card-text{
-        font-family: Verdana;
-        font-size: small;
+    #descripcionImagen{
+        font-size: 14px;
     }
-
 </style>

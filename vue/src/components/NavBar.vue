@@ -3,7 +3,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <nav class="navbar">
-                    <router-link to="/" class="navbar-brand mb-0 h1">SB PROJECT</router-link>
+                    <span class="navbar-brand mb-0 h1">SB PROJECT</span>
+                    <router-link to="/" class="btn btn-light">Añadir una foto</router-link>
                 </nav>
             </div>
         </div>
@@ -34,8 +35,5 @@
     }
     .col-lg-12 {
         width: 100%;
-    }
-    .navbar-brand:hover{
-        text-shadow: 2px 2px 8px white;
     }
 </style>
