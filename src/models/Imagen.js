@@ -3,7 +3,7 @@ const {Schema} = require('mongoose');
 
 const Imagen = new Schema({
     id: String,
-    imagenPath: String,
+    imagen: String,
     descripcion: String,
     fechaSubida: String,
     subidoPor: String

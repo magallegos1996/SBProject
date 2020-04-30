@@ -81,6 +81,8 @@
                     this.imagenSeleccionada = file;
                     this.imagenValida = true;
                     this.error = '';
+
+
                 }
             },
             validarArchivo(file) {
@@ -89,11 +91,13 @@
             },
             empezar(){
                 //Construccion objeto
+                this.objImagen.imagen = this.image;
                 this.objImagen.descripcion = this.descripcionIngresada.trim();
                 this.objImagen.fechaSubida = this.obtenerFecha();
                 this.objImagen.subidoPor = this.nombreIngresado;
 
-                //console.log(this.objImagen);
+                console.log('ESTO ES EL OBJIMG');
+                console.log(this.objImagen);
 
                 //Insercion de nueva imagen
                 this.$http.post(this.baseURI + '/feed', this.objImagen)

@@ -6,7 +6,9 @@
             <div class="row pt-4">
                 <div class="col-md-3 pt-3 pb-3" v-for="(publicacion,index) in publicaciones" v-bind:key="index">
                     <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="https://images.summitmedia-digital.com/preview/images/articles/2016/04/25/summer/nm_summer.jpg" alt="Card image cap">
+                        <div class="container">
+                            <img class="card-img-top img-fluid text-center pt-3" :src="`${publicacion.imagen}`" alt="Card image cap">
+                        </div>
                         <div class="card-body">
                             <p class="card-text">{{publicacion.descripcion}}</p>
                         </div>
@@ -37,7 +39,8 @@
             this.$http.get(this.baseURI + '/feed')
                 .then((publicaciones)=>{
                     this.publicaciones = publicaciones.data;
-                    console.log(this.publicaciones[0]);
+                    console.log("PUBLICACIONES");
+                    console.log(this.publicaciones);
                 })
                 .catch(e => console.log(e));
         },
@@ -49,9 +52,22 @@
 
 <style scoped>
 
+    .card-img-top {
+        border-radius: 25px;
+        object-fit: cover;
+    }
+    .container img {
+        width: 288px;
+        height: 288px;
+    }
     .card:hover{
         cursor: pointer;
         box-shadow: -1px 6px 35px 3px darkgray;
+        border: 1px solid #1abc9c;
+    }
+    .card-text{
+        font-family: Verdana;
+        font-size: small;
     }
 
 </style>

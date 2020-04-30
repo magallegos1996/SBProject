@@ -1,6 +1,6 @@
 class Imagen {
     constructor() {
-        this.imagenPath = '';
+        this.imagen = '';
         this.descripcion = '';
         this.fechaSubida = '';
         this.subidoPor = '';

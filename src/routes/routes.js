@@ -11,6 +11,7 @@ router.get('/feed', (req, res)=>{
 router.post('/feed', (req, res)=>{
     const imagen = new Imagen(req.body);
     imagen.save().then(r => console.log(r)).catch(e => console.log(e));
+
     res.json({
         status: 'Imagen guardada'
     });
@@ -25,6 +26,5 @@ router.delete('/feed', (req, res)=>{
             })
         }).catch(e => console.log(e));
 });
-
 
 module.exports = router;
