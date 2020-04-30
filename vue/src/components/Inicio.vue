@@ -1,6 +1,6 @@
 <template>
-    <div class=" pt-5 pb-5">
-        <div class="row pt-5 pb-5">
+    <div class=" pt-0 pb-0">
+        <div class="row pt-1 pb-5">
             <div class="col-lg-4 offset-lg-4">
                 <div class="card pt-4">
                     <div class="container">
@@ -19,8 +19,13 @@
                                     <input v-model="nombreIngresado" type="text" class="form-control" placeholder="Nombre">
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col pb-3">
+                                    <textarea v-model="descripcionIngresada" class="form-control" rows="4" placeholder="Descripción (Opcional)"></textarea>
+                                </div>
+                            </div>
                         </form>
-                        <button class="btn btn-block" v-on:click="validarNombre">¡EMPEZAR!</button>
+                        <button class="btn btn-block" v-on:click="validarNombre">¡SUBIR FOTO!</button>
                         <small class="text-danger text-center"><b>{{error}}</b></small>
                     </div>
                 </div>
@@ -31,17 +36,23 @@
 
 <script>
 
+    import Imagen from '../models/Imagen';
+    import dateFormat from 'dateformat'
+
     export default {
         name: "Inicio",
         data() {
             return {
                 nombreIngresado: '',
+                descripcionIngresada: '',
                 hover: false,
                 image: '',
                 imagenSeleccionada: null,
                 formatosValidos : ['image/jpg', 'image/jpeg'],
                 error: '',
-                imagenValida: false
+                imagenValida: false,
+                baseURI: 'http://localhost:3000/sb',
+                objImagen: new Imagen()
             }
         },
         methods: {
@@ -77,7 +88,23 @@
                 return this.formatosValidos.includes(file.type);
             },
             empezar(){
-                this.$router.push('feed');
+                //Construccion objeto
+                this.objImagen.descripcion = this.descripcionIngresada.trim();
+                this.objImagen.fechaSubida = this.obtenerFecha();
+                this.objImagen.subidoPor = this.nombreIngresado;
+
+                //console.log(this.objImagen);
+
+                //Insercion de nueva imagen
+                this.$http.post(this.baseURI + '/feed', this.objImagen)
+                    .then(() => {
+                        console.log('IMAGEN INSERTADA CON ÉXITO');
+                        this.$router.push('feed');
+                    })
+                    .catch(e => console.log('Error al insertar imagen' + e));
+            },
+            obtenerFecha(){
+                return dateFormat(new Date(), 'mediumDate')
             }
         }
     }
@@ -117,6 +144,9 @@
     .container img {
         width: 288px;
         height: 288px;
+    }
+    textarea{
+        resize: none;
     }
 
 </style>

@@ -8,9 +8,4 @@
 </template>
 
 <style>
-
-#app {
-  background-color: #1abc9c;
-}
-
 </style>

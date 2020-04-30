@@ -1,7 +1,7 @@
 const express = require ('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-
+const cors = require('cors');
 
 const app = express();
 
@@ -11,6 +11,9 @@ mongoose.connect('mongodb://localhost/sb_database', {
 }).then(() => console.log('BASE DE DATOS CONECTADA: ')).catch(e => console.log(e));
 //Settings
 app.set('port', process.env.PORT || 3000);
+app.use(cors({
+   origin: 'http://localhost:8080'
+}));
 
 
 //Middlewares
