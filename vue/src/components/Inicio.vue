@@ -186,9 +186,12 @@
         background-color: #00BFA6;
         color: white;
         font-weight: bold;
+        opacity: 0.7;
+        transition: 0.3s;
+        border: none;
     }
     .btn:hover {
-        box-shadow: 5px 10px 13px #999;
+        opacity: 1;
     }
     .card-img-top:hover{
         cursor: pointer;

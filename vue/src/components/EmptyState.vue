@@ -11,16 +11,15 @@
                 <p class="text-muted">No se ha podido encontrar ninguna publicación. Haz clic en '+' para crear una nueva</p>
             </div>
             <div class="col-lg-12 pr-5">
-                <AñadirFotoBtn/>
+                <AddFotoBtn/>
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
 
-    import AñadirFotoBtn from "./AñadirFotoBtn";
+    import AddFotoBtn from "./AddFotoBtn";
 
     export default {
         name: "EmptyFeed",
@@ -33,7 +32,7 @@
             }
         },
         components: {
-            AñadirFotoBtn
+            AddFotoBtn,
         },
         methods: {
         },

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Inicio from "../components/Inicio";
 import Feed from "../components/Feed";
+import Login from "../components/Login";
 import { AuthService } from '../service/auth.service';
 
 Vue.use(VueRouter);
@@ -24,18 +25,18 @@ const router = new VueRouter({
       component: Feed
     },
     {
+      path: '/login',
+      name: 'Login',
+      component: Login,
+      meta: {
+        public: true,
+        onlyWhenLoggedOut: true
+      }
+    },
+    {
       path: '*',
       redirect: '/'
     },
-    /* {
-       path: '/about',
-       name: 'About',
-       // route level code-splitting
-       // this generates a separate chunk (about.[hash].js) for this route
-       // which is lazy-loaded when the route is visited.
-       component: () => import(/* webpackChunkName: "about"  '../views/About.vue')
-     }*/
-
   ],
 });
 
@@ -54,20 +55,5 @@ router.beforeEach((to, from, next) => {
   }*/
   next();
 });
-
-/*router.beforeEach((to, from, next) => {
-  store.dispatch('fetchAccessToken');
-  if (to.fullPath === '/users') {
-    if (!store.state.accessToken) {
-      next('/login');
-    }
-  }
-  if (to.fullPath === '/login') {
-    if (store.state.accessToken) {
-      next('/users');
-    }
-  }
-  next();
-});*/
 
 export default router;

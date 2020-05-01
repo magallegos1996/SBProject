@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="col-lg-12 pr-5">
-            <AñadirFotoBtn/>
+            <AddFotoBtn/>
         </div>
     </div>
 </template>
@@ -29,7 +29,7 @@
     //import NavBar from "./NavBar";
     //import UIFab from 'keen-ui/lib/UiFab'
     import EmptyFeed from "./EmptyState";
-    import AñadirFotoBtn from "./AñadirFotoBtn";
+    import AddFotoBtn from "./AddFotoBtn";
 
     export default {
         name: "Feed",
@@ -43,7 +43,7 @@
             //NavBar
            // UIFab,
             EmptyFeed,
-            AñadirFotoBtn
+            AddFotoBtn
         },
         mounted() {
             this.$http.get(this.baseURI + '/feed')

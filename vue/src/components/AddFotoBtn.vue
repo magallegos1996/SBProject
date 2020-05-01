@@ -7,7 +7,7 @@
     import UIFab from 'keen-ui/lib/UiFab'
 
     export default {
-        name: "AñadirFotoBtn",
+        name: "AddFotoBtn",
         components: {
             UIFab
         },
