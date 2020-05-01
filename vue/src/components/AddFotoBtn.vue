@@ -1,5 +1,5 @@
 <template>
-    <u-i-fab id="irNuevaFoto" class="float-right mr-5 mb-5" color="primary" size="normal" v-on:click="irNuevaFoto"><font-awesome-icon icon="plus"/></u-i-fab>
+    <u-i-fab id="irNuevaFoto" class="float-right mr-2 mb-5" color="primary" size="normal" v-on:click="irNuevaFoto"><font-awesome-icon icon="plus"/></u-i-fab>
 </template>
 
 <script>
@@ -13,7 +13,7 @@
         },
         methods: {
             irNuevaFoto(){
-                this.$router.push('inicio');
+                this.$router.push('subir-foto');
             }
         }
     }

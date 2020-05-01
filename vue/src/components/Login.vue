@@ -12,14 +12,14 @@
                         <h5 class="card-title text-center text-muted">Ingresa tus credenciales</h5>
                         <div class="row pb-3">
                             <div class="col">
-                                <label for="nombreIngreso">Tu nombre</label>
-                                <input type="text" class="form-control" id="nombreIngreso">
+                                <label class="text-muted" for="nombreIngreso">Tu nombre</label>
+                                <input v-model="nombreIngresado" type="text" class="form-control" id="nombreIngreso">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <button class="btn btn-primary btn-block">Ingresar</button>
-                                <small class="text-danger text-center"><b></b></small>
+                                <button class="btn btn-primary btn-block" v-on:click="validarNombre">Ingresar</button>
+                                <small class="text-danger text-center"><b>{{error}}</b></small>
                             </div>
                         </div>
                     </div>
@@ -35,10 +35,25 @@
         name: "Login",
         data () {
             return {
-
+                nombreIngresado: '',
+                nombresValidos: ['Stefanía Burneo', 'Stefania Burneo', 'Marcelo Gallegos'],
+                error: '',
             }
         },
         components: {
+        },
+        methods: {
+            validarNombre() {
+                if(!this.nombresValidos.includes(this.nombreIngresado.trim())){
+                    this.error = 'No es un nombre válido';
+                }else{
+                    this.autenticar();
+                }
+            },
+            autenticar(){
+                localStorage.setItem('LoggedUser', this.nombreIngresado);
+                this.$router.push('feed');
+            }
         }
     }
 </script>
@@ -47,9 +62,6 @@
     img {
         width: 300px;
         height: 300px;
-    }
-    b {
-        color: #00BFA6;
     }
     .btn {
         background-color: #00BFA6;
