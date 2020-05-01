@@ -1,7 +1,7 @@
 <template>
-    <div class="container pt-5">
+    <div class="container">
         <div class="col-lg-12 pr-5">
-            <u-i-fab id="irFeed" class="float-right mt-4 mr-3" color="primary" tooltip-position="left" tooltip="Ir al Feed" size="normal" v-on:click="irAFeed"><font-awesome-icon icon="arrow-right"/></u-i-fab>
+            <v-btn fab dark fixed top left slot="activator" v-bind:color="'#00BFA6'" v-on="on" @click="irAFeed"><font-awesome-icon icon="arrow-left"/></v-btn>
         </div>
         <div class="col-lg-4 offset-lg-4">
             <div class="card mt-3">
@@ -39,8 +39,6 @@
     import Imagen from '../models/Imagen';
     import dateFormat from 'dateformat'
     import { AuthService } from "../service/auth.service";
-    import 'keen-ui/src/bootstrap'
-    import UIFab from 'keen-ui/lib/UiFab'
 
     export default {
         name: "SubirFoto",
@@ -59,7 +57,6 @@
             }
         },
         components: {
-            UIFab
         },
         mounted() {
             if(AuthService.isAuth()){
@@ -98,7 +95,6 @@
                 return this.formatosValidos.includes(file.type);
             },
             subir(){
-
                 //Construccion objeto
                 this.objImagen.titulo = this.tituloIngresado.trim();
                 this.objImagen.imagen = this.image;
@@ -110,11 +106,19 @@
                 this.$http.post(this.baseURI + '/feed', this.objImagen)
                     .then(() => {
                         console.log('IMAGEN INSERTADA CON ÉXITO');
-                        try{
-                            this.$router.push('feed'); //Se redirecciona a la pagina FEED
-                        }catch (e) {
-                            console.log(e);
-                        }
+                        this.$http.get(this.baseURI + '/feed')
+                            .then((publicaciones)=>{
+                                this.publicaciones = publicaciones.data;
+                                this.$store.commit("cargarPublicaciones", this.publicaciones);
+                                this.$router.push('feed'); //Se redirecciona a la pagina FEED
+                            })
+                            .catch(e => console.log(e));
+                        //this.$store.commit("changeName", "New Name");
+                        /* try{
+                             this.$router.push('feed'); //Se redirecciona a la pagina FEED
+                         }catch (e) {
+                             console.log(e);
+                         }*/
                     })
                     .catch(e => console.log('Error al insertar imagen' + e));
             },

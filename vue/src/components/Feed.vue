@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="col-lg-12 pr-3">
-            <AddFotoBtn/>
+            <v-btn fab dark fixed bottom right v-bind:color="'#F50057'" @click="irASubirImagen"><font-awesome-icon icon="plus"/></v-btn>
         </div>
     </div>
 </template>
@@ -25,7 +25,6 @@
 <script>
 
     import EmptyFeed from "./EmptyState";
-    import AddFotoBtn from "./AddFotoBtn";
 
     export default {
         name: "Feed",
@@ -37,18 +36,16 @@
         },
         components: {
             EmptyFeed,
-            AddFotoBtn
         },
-        created() {
-            this.$http.get(this.baseURI + '/feed')
-                .then((publicaciones)=>{
-                    this.publicaciones = publicaciones.data;
-                    console.log("PUBLICACIONES");
-                    console.log(this.publicaciones);
-                })
-                .catch(e => console.log(e));
+        created () {
+            console.log('CREATED');
+            this.publicaciones = this.$store.getters.publicaciones;
+            console.log(this.publicaciones);
         },
         methods: {
+            irASubirImagen () {
+                this.$router.push('subir-foto');
+            }
         }
     }
 </script>
@@ -60,7 +57,9 @@
         object-fit: cover;
         border: none;
     }
-    .card{
+    .card {
+        opacity: 0.85;
+        transition: 0.3s;
     }
     .container img {
         width: 250px;
@@ -69,6 +68,7 @@
     .card:hover{
         cursor: pointer;
         box-shadow: -1px 6px 35px 3px darkgray;
+        opacity: 1;
     }
     .card-title{
         font-size: 15px;

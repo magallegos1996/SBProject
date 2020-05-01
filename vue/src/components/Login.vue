@@ -1,5 +1,5 @@
 <template>
-    <div class="container pt-5">
+    <div class="container pt-3">
         <div class="row">
             <div class="col-lg-12">
                 <img class="img-fluid mx-auto d-block" src="../assets/login.svg" alt="Login Ill">
@@ -10,7 +10,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title text-center text-muted">Ingresa tus credenciales</h5>
-                        <div class="row pb-3">
+                        <div class="row">
                             <div class="col">
                                 <label class="text-muted" for="nombreIngreso">Tu nombre</label>
                                 <input v-model="nombreIngresado" type="text" class="form-control" id="nombreIngreso">

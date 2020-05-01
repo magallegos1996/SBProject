@@ -11,15 +11,13 @@
                 <p class="text-muted">No se ha podido encontrar ninguna publicación. Haz clic en '+' para crear una nueva</p>
             </div>
             <div class="col-lg-12 pr-5">
-                <AddFotoBtn/>
+                <v-btn fab dark fixed bottom right v-bind:color="'#F50057'" @click="irASubirImagen"><font-awesome-icon icon="plus"/></v-btn>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-
-    import AddFotoBtn from "./AddFotoBtn";
 
     export default {
         name: "EmptyFeed",
@@ -32,9 +30,11 @@
             }
         },
         components: {
-            AddFotoBtn,
         },
         methods: {
+            irASubirImagen () {
+                this.$router.push('subir-foto');
+            }
         },
     }
 </script>

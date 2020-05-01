@@ -1,2 +1,3 @@
 .idea
 node_modules
+vue/src/components/Feed.vue
