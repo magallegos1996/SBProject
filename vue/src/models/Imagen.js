@@ -4,6 +4,7 @@ class Imagen {
         this.titulo = '';
         this.descripcion = '';
         this.fechaSubida = '';
+        this.horaSubida = '';
         this.subidoPor = '';
     }
 }

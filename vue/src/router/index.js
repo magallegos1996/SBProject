@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import SubirFoto from "../components/SubirFoto";
 import Feed from "../components/Feed";
 import Login from "../components/Login";
+import Publicacion from "../components/Publicacion";
 import { AuthService } from '../service/auth.service';
 
 Vue.use(VueRouter);
@@ -28,6 +29,11 @@ const router = new VueRouter({
         public: true,
         onlyWhenLoggedOut: true
       }
+    },
+    {
+      path: '/publicacion',
+      name: 'Publicacion',
+      component: Publicacion
     },
     {
       path: '*',

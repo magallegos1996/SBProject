@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="col-lg-12 pr-5">
-            <v-btn fab dark fixed top left slot="activator" v-bind:color="'#00BFA6'" v-on="on" @click="irAFeed"><font-awesome-icon icon="arrow-left"/></v-btn>
+            <v-btn fab dark fixed top left slot="activator" v-bind:color="'#00BFA6'" @click="irAFeed"><font-awesome-icon icon="arrow-left"/></v-btn>
         </div>
         <div class="col-lg-4 offset-lg-4">
             <div class="card mt-3">
@@ -39,6 +39,7 @@
     import Imagen from '../models/Imagen';
     import dateFormat from 'dateformat'
     import { AuthService } from "../service/auth.service";
+    import PublicacionesService from '../service/Publicaciones.service'
 
     export default {
         name: "SubirFoto",
@@ -51,7 +52,6 @@
                 formatosValidos : ['image/jpg', 'image/jpeg'],
                 error: '',
                 imagenValida: false,
-                baseURI: 'http://localhost:3000/sb',
                 objImagen: new Imagen(),
                 estaAutenticado: false,
             }
@@ -94,38 +94,30 @@
                 //Validar si es imagen jpg o jpeg
                 return this.formatosValidos.includes(file.type);
             },
-            subir(){
+            async subir(){
                 //Construccion objeto
                 this.objImagen.titulo = this.tituloIngresado.trim();
                 this.objImagen.imagen = this.image;
                 this.objImagen.descripcion = this.descripcionIngresada.trim();
-                this.objImagen.fechaSubida = this.obtenerFecha();
+                this.objImagen.fechaSubida = this.obtenerFechaYHora()[0];
+                this.objImagen.horaSubida = this.obtenerFechaYHora()[1];
                 this.objImagen.subidoPor = localStorage.getItem('LoggedUser');
 
-                //Insercion de nueva imagen
-                this.$http.post(this.baseURI + '/feed', this.objImagen)
-                    .then(() => {
-                        console.log('IMAGEN INSERTADA CON ÉXITO');
-                        this.$http.get(this.baseURI + '/feed')
-                            .then((publicaciones)=>{
-                                this.publicaciones = publicaciones.data;
-                                this.$store.commit("cargarPublicaciones", this.publicaciones);
-                                this.$router.push('feed'); //Se redirecciona a la pagina FEED
-                            })
-                            .catch(e => console.log(e));
-                        //this.$store.commit("changeName", "New Name");
-                        /* try{
-                             this.$router.push('feed'); //Se redirecciona a la pagina FEED
-                         }catch (e) {
-                             console.log(e);
-                         }*/
-                    })
-                    .catch(e => console.log('Error al insertar imagen' + e));
+                //Insertar publicacion
+                await PublicacionesService.insertarPublicacion(this.objImagen);
+                this.irAFeed(); //Se redirecciona a la pagina FEED
             },
-            obtenerFecha(){
-                return dateFormat(new Date(), 'mediumDate')
+            obtenerFechaYHora(){
+                let fechaYHora = [];
+                fechaYHora = [dateFormat(new Date(), 'mediumDate'), dateFormat(new Date(), 'shortTime')];
+                return fechaYHora;
             },
-            irAFeed (){
+            async irAFeed (){
+                console.log('ENTRO AL FEED');
+                const respuesta = await PublicacionesService.obtenerPublicaciones();
+                console.log('OBTUVO PUBLICACIONES');
+                this.publicaciones = respuesta.data;
+                this.$store.commit("cargarPublicaciones", this.publicaciones);
                 this.$router.push('feed');
             }
         }

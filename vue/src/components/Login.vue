@@ -31,12 +31,15 @@
 
 <script>
 
+    import PublicacionesService from '../service/Publicaciones.service'
+
     export default {
         name: "Login",
         data () {
             return {
                 nombreIngresado: '',
                 nombresValidos: ['Stefanía Burneo', 'Stefania Burneo', 'Marcelo Gallegos'],
+                publicaciones: [],
                 error: '',
             }
         },
@@ -52,7 +55,17 @@
             },
             autenticar(){
                 localStorage.setItem('LoggedUser', this.nombreIngresado);
-                this.$router.push('feed');
+                this.cargarPublicaciones();
+            },
+            async cargarPublicaciones () {
+                try{
+                    const respuesta = await PublicacionesService.obtenerPublicaciones();
+                    this.publicaciones = respuesta.data;
+                    this.$store.commit("cargarPublicaciones", this.publicaciones[0]);
+                    this.$router.push('feed'); //Se redirecciona a la pagina FEED
+                }catch (e) {
+                    console.log(e)
+                }
             }
         }
     }

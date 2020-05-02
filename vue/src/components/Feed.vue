@@ -9,8 +9,8 @@
                     <img class="card-img-top img-thumbnail mx-auto" :src="`${publicacion.imagen}`" alt="Card image cap">
                     <div class="card-body">
                         <p class="card-title"><b>{{publicacion.titulo}}</b></p>
-                        <p class="card-text" id="descripcionImagen">{{publicacion.descripcion}}</p>
-                        <p class="card-text"><small class="text-muted">{{publicacion.fechaSubida}}</small></p>
+                        <!--<p class="card-text" id="descripcionImagen">{{publicacion.descripcion}}</p>-->
+                        <p class="card-text"><small class="text-muted">{{publicacion.fechaSubida}} {{publicacion.horaSubida}}</small></p>
                         <p class="card-text"><small class="text-muted"><b>Subido por:</b> {{publicacion.subidoPor}}</small></p>
                     </div>
                 </div>
@@ -25,25 +25,28 @@
 <script>
 
     import EmptyFeed from "./EmptyState";
+    import PublicacionesService from '../service/Publicaciones.service'
 
     export default {
         name: "Feed",
         data () {
             return {
                 publicaciones: [],
-                baseURI: 'http://localhost:3000/sb',
             }
         },
         components: {
             EmptyFeed,
         },
-        created () {
-            console.log('CREATED');
-            this.publicaciones = this.$store.getters.publicaciones;
+        async created () {
+            //this.publicaciones = this.$store.getters.publicaciones;
+            const respuesta = await PublicacionesService.obtenerPublicaciones();
+            this.publicaciones = respuesta.data.docs; //usando mongoose pagination
             console.log(this.publicaciones);
+            this.$store.commit("cargarPublicaciones", this.publicaciones);
         },
         methods: {
             irASubirImagen () {
+                this.$store.commit("cargarPublicaciones", []);
                 this.$router.push('subir-foto');
             }
         }

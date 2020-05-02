@@ -2,10 +2,17 @@ const express = require ('express');
 const router = express.Router();
 const Imagen = require('../models/Imagen');
 
-router.get('/feed', (req, res)=>{
+/*router.get('/feed', (req, res)=>{
     Imagen.find().then((imagenes)=>{
         res.send(imagenes)
     }).catch(e => console.log(e));
+});*/
+
+router.get('/feed', (req, res)=> {
+
+    Imagen.paginate({}, { page:1, limit: 2, sort: { _id: -1 } }).then((imagenes) => {
+        res.send(imagenes)
+    });
 });
 
 router.post('/feed', (req, res)=>{
