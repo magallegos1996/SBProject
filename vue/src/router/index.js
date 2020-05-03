@@ -3,8 +3,8 @@ import VueRouter from 'vue-router'
 import SubirFoto from "../components/SubirFoto";
 import Feed from "../components/Feed";
 import Login from "../components/Login";
-import Publicacion from "../components/Publicacion";
 import { AuthService } from '../service/auth.service';
+import Modal from "../components/Modal";
 
 Vue.use(VueRouter);
 
@@ -31,9 +31,9 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/publicacion',
-      name: 'Publicacion',
-      component: Publicacion
+      path: '/modal',
+      name: 'Modal',
+      component: Modal
     },
     {
       path: '*',

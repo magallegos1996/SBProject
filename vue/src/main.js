@@ -7,6 +7,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {faArrowLeft, faPlus} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import vuetify from './plugins/vuetify';
+export const bus = new Vue();
 
 //Usando FONT AWESOME
 library.add(faArrowLeft);

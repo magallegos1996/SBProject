@@ -20,6 +20,11 @@ export default  {
         try{
             return Api().post(Api().getUri() + '/feed', publicacion)
         }catch (e) { console.log(e); }
+    },
+    eliminarPublicacion (idPublicacion) {
+        try{
+            return Api().delete(Api().getUri() + '/publicacion/' + idPublicacion);
+        }catch (e) { console.log(e) }
     }
 
 }

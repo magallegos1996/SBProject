@@ -2,12 +2,6 @@ const express = require ('express');
 const router = express.Router();
 const Imagen = require('../models/Imagen');
 
-/*router.get('/feed', (req, res)=>{
-    Imagen.find().then((imagenes)=>{
-        res.send(imagenes)
-    }).catch(e => console.log(e));
-});*/
-
 router.get('/feed', (req, res) => {
     Imagen.paginate({}, { page:1, limit: 3, sort: { _id: -1 } }).then((imagenes) => {
         res.send(imagenes)
@@ -29,7 +23,14 @@ router.post('/feed', (req, res)=>{
         status: 'Imagen guardada'
     });
 });
-
+router.delete('/publicacion/:id', (req, res) => {
+    const idPublicacion =  req.params.id;
+    Imagen.findByIdAndDelete(idPublicacion)
+        .then((resultado)=>{
+            res.json(resultado);
+        })
+        .catch(e => console.log('Error al eliminar publicacion' + e));
+});
 
 
 

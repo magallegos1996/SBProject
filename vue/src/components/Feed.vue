@@ -6,14 +6,17 @@
         <v-btn fab dark fixed top right v-bind:color="'#F50057'" @click="irASubirImagen"><font-awesome-icon icon="plus"/></v-btn>
         <div class="row pt-4">
             <div class="col-lg-4 pt-3 pb-3" v-for="(publicacion,index) in publicaciones" v-bind:key="index">
-                <Publicacion
-                        :titulo="publicacion.titulo"
-                        :descripcion="publicacion.descripcion"
-                        :fechaSubida="publicacion.fechaSubida"
-                        :horaSubida="publicacion.horaSubida"
-                        :subidoPor="publicacion.subidoPor"
-                        :imagen="`${publicPath}img/uploads/${publicacion.nombre}`"
-                />
+                    <Publicacion
+                            id="publicacion"
+                            :idPublicacion="publicacion._id"
+                            :titulo="publicacion.titulo"
+                            :descripcion="publicacion.descripcion"
+                            :fechaSubida="publicacion.fechaSubida"
+                            :horaSubida="publicacion.horaSubida"
+                            :subidoPor="publicacion.subidoPor"
+                            :imagen="`${publicPath}img/uploads/${publicacion.nombre}`"
+                            @quitar-publicacion-feed="quitarPublicacionFeed"
+                    />
             </div>
         </div>
         <div class="col-lg-12 pt-5 text-center" v-if="hasNextPage">
@@ -40,15 +43,14 @@
         },
         components: {
             EmptyFeed,
-            Publicacion
+            Publicacion,
         },
         async created () {
             const respuesta = await PublicacionesService.obtenerPublicaciones();
+            //console.log(respuesta.data.docs);
             this.publicaciones = respuesta.data.docs; //usando mongoose pagination
             this.hasNextPage = respuesta.data.hasNextPage
             this.nextPage = respuesta.data.nextPage
-            console.log(this.hasNextPage);
-            console.log(this.nextPage);
         },
         mounted() {},
         methods: {
@@ -59,20 +61,27 @@
             async cargarMas () {
                 if(this.hasNextPage) {
                     const respuesta = await PublicacionesService.obtenerSiguientesPublicaciones(this.nextPage);
-                    console.log(respuesta.data.docs);
                     this.publicaciones.push.apply(this.publicaciones, respuesta.data.docs);
                     this.hasNextPage = respuesta.data.hasNextPage
                     this.nextPage = respuesta.data.nextPage
-                    console.log(this.publicaciones.length);
                 }
+            },
+            quitarPublicacionFeed (publicacionEliminada) {
+                const index = this.publicaciones.findIndex(publicacion => publicacion._id === publicacionEliminada._id);
+                this.publicaciones.splice(index, 1);
             }
         }
     }
 </script>
-
 <style scoped>
     .container img {
         width: 250px;
         height: 250px;
+    }
+    #publicacion{
+        cursor: pointer;
+    }
+    #publicacion:hover{
+        box-shadow: -1px 6px 35px 3px darkgray;
     }
 </style>
