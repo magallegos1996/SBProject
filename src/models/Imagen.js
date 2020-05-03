@@ -4,7 +4,9 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 
 const Imagen = new Schema({
     id: String,
-    imagen: String,
+    nombre: String,
+    path: String,
+    tipoImagen: String,
     titulo: String,
     descripcion: String,
     fechaSubida: String,

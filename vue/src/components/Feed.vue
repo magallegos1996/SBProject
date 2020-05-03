@@ -6,10 +6,9 @@
         <div class="row pt-4">
             <div class="col-lg-4 pt-3 pb-3" v-for="(publicacion,index) in publicaciones" v-bind:key="index">
                 <div class="card" style="width: 15rem;">
-                    <img class="card-img-top img-thumbnail mx-auto" :src="`${publicacion.imagen}`" alt="Card image cap">
+                    <img class="card-img-top img-thumbnail mx-auto" :src="`${publicPath}img/uploads/${publicacion.nombre}`" alt="Imagen">
                     <div class="card-body">
                         <p class="card-title"><b>{{publicacion.titulo}}</b></p>
-                        <!--<p class="card-text" id="descripcionImagen">{{publicacion.descripcion}}</p>-->
                         <p class="card-text"><small class="text-muted">{{publicacion.fechaSubida}} {{publicacion.horaSubida}}</small></p>
                         <p class="card-text"><small class="text-muted"><b>Subido por:</b> {{publicacion.subidoPor}}</small></p>
                     </div>
@@ -32,18 +31,30 @@
         data () {
             return {
                 publicaciones: [],
+                pagina: 0,
+                publicPath: process.env.BASE_URL, //Importante para tener acceso a la carpeta publica de manera que se puedan acceder a las imagenes
             }
         },
         components: {
             EmptyFeed,
         },
         async created () {
-            //this.publicaciones = this.$store.getters.publicaciones;
             const respuesta = await PublicacionesService.obtenerPublicaciones();
             this.publicaciones = respuesta.data.docs; //usando mongoose pagination
-            console.log(this.publicaciones);
-            this.$store.commit("cargarPublicaciones", this.publicaciones);
+            console.log(respuesta.data);
         },
+        /*mounted() {
+            window.onscroll = async () => {
+                let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+                if(bottomOfWindow) {
+                    //Cargar mas publicaciones
+                    const respuesta = await PublicacionesService.obtenerSiguientesPublicaciones(this.pagina);
+                    this.publicaciones.push(respuesta.data.docs);
+                    console.log('RESPUESTA AÑADIDAS');
+                    console.log(respuesta.data);
+                }
+            }
+        },*/
         methods: {
             irASubirImagen () {
                 this.$store.commit("cargarPublicaciones", []);

@@ -61,7 +61,6 @@
                 try{
                     const respuesta = await PublicacionesService.obtenerPublicaciones();
                     this.publicaciones = respuesta.data;
-                    this.$store.commit("cargarPublicaciones", this.publicaciones[0]);
                     this.$router.push('feed'); //Se redirecciona a la pagina FEED
                 }catch (e) {
                     console.log(e)
