@@ -3,6 +3,7 @@
         <EmptyFeed/>
     </div>
     <div class="container mb-4 mt-4" v-else>
+        <v-btn fab dark fixed top right v-bind:color="'#F50057'" @click="irASubirImagen"><font-awesome-icon icon="plus"/></v-btn>
         <div class="row pt-4">
             <div class="col-lg-4 pt-3 pb-3" v-for="(publicacion,index) in publicaciones" v-bind:key="index">
                 <div class="card" style="width: 15rem;">
@@ -15,8 +16,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 pr-3">
-            <v-btn fab dark fixed bottom right v-bind:color="'#F50057'" @click="irASubirImagen"><font-awesome-icon icon="plus"/></v-btn>
+        <div class="col-lg-12 pt-5 text-center">
+            <v-btn v-if="hasNextPage" rounded light @click="cargarMas">Ver más</v-btn>
         </div>
     </div>
 </template>
@@ -31,7 +32,8 @@
         data () {
             return {
                 publicaciones: [],
-                pagina: 0,
+                nextPage: 0,
+                hasNextPage: false,
                 publicPath: process.env.BASE_URL, //Importante para tener acceso a la carpeta publica de manera que se puedan acceder a las imagenes
             }
         },
@@ -41,24 +43,26 @@
         async created () {
             const respuesta = await PublicacionesService.obtenerPublicaciones();
             this.publicaciones = respuesta.data.docs; //usando mongoose pagination
-            console.log(respuesta.data);
+            this.hasNextPage = respuesta.data.hasNextPage
+            this.nextPage = respuesta.data.nextPage
+            console.log(this.hasNextPage);
+            console.log(this.nextPage);
         },
-        /*mounted() {
-            window.onscroll = async () => {
-                let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-                if(bottomOfWindow) {
-                    //Cargar mas publicaciones
-                    const respuesta = await PublicacionesService.obtenerSiguientesPublicaciones(this.pagina);
-                    this.publicaciones.push(respuesta.data.docs);
-                    console.log('RESPUESTA AÑADIDAS');
-                    console.log(respuesta.data);
-                }
-            }
-        },*/
+        mounted() {},
         methods: {
             irASubirImagen () {
                 this.$store.commit("cargarPublicaciones", []);
                 this.$router.push('subir-foto');
+            },
+            async cargarMas () {
+                if(this.hasNextPage) {
+                    const respuesta = await PublicacionesService.obtenerSiguientesPublicaciones(this.nextPage);
+                    console.log(respuesta.data.docs);
+                    this.publicaciones.push.apply(this.publicaciones, respuesta.data.docs);
+                    this.hasNextPage = respuesta.data.hasNextPage
+                    this.nextPage = respuesta.data.nextPage
+                    console.log(this.publicaciones.length);
+                }
             }
         }
     }

@@ -114,7 +114,7 @@
 
                 try{
                     await PublicacionesService.insertarPublicacion(this.objImagen);
-                    //this.irAFeed(); //Se redirecciona a la pagina FEED
+                    this.irAFeed(); //Se redirecciona a la pagina FEED
 
                 }catch (e) { console.log('Error al subir la publicación: ' + e)}
             },

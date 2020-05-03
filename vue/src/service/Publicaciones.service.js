@@ -4,13 +4,11 @@ export default  {
     obtenerPublicaciones () {
         try{
             return Api().get(Api().getUri() + '/feed');
-
         }catch (e) { console.log(e); }
     },
     obtenerSiguientesPublicaciones (page) {
         try{
             return Api().get(Api().getUri() + '/feed/' + page );
-
         }catch (e) { console.log(e) }
     },
     subirImagen (formData) {

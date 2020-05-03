@@ -29,6 +29,13 @@ router.post('/feed', (req, res)=>{
         status: 'Imagen guardada'
     });
 });
+
+
+
+
+
+
+
 router.delete('/feed', (req, res)=>{
     Imagen.remove({})
         .then((resultado) => {
