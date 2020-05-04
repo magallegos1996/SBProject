@@ -1,11 +1,14 @@
 <template>
     <v-card class="mx-auto">
-        <v-img :src="imagen" max-height="200px"></v-img>
-        <v-card-title>{{titulo}}</v-card-title>
-        <v-card-subtitle class="pb-0"><b>Subido por: </b>{{subidoPor}}</v-card-subtitle>
-        <v-card-subtitle id="fechaHora" class="text-muted align-end">{{fechaSubida}} {{horaSubida}}</v-card-subtitle>
+        <div @click.stop="mostrarImagen">
+            <v-img :src="imagen" max-height="200px"></v-img>
+            <v-card-title class="d-inline-block text-truncate" style="max-width: 100%">
+                {{titulo}}
+            </v-card-title>
+            <v-card-subtitle class="pb-0"><b>Subido por: </b>{{subidoPor}}</v-card-subtitle>
+            <v-card-subtitle id="fechaHora" class="text-muted text-right">{{fechaSubida}} {{horaSubida}}</v-card-subtitle>
+        </div>
         <v-card-actions>
-            <v-btn :color="'#2B9EB3'" primary text @click.stop="mostrarImagen">Ver</v-btn>
             <v-btn :color="'#7776BC'" text @click="mostrarModalEliminacion">Comentar</v-btn>
             <v-btn :color="'#b20d30'" text @click="mostrarModalEliminacion">Eliminar</v-btn>
             <v-spacer></v-spacer>

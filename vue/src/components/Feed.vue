@@ -3,22 +3,23 @@
         <EmptyFeed/>
     </div>
     <div class="container" v-else>
-        <v-btn fab dark fixed top right v-bind:color="'#F50057'" @click="irASubirImagen"><font-awesome-icon icon="plus"/></v-btn>
+        <SearchBar/>
         <div class="row pt-4">
             <div class="col-lg-4 pt-3 pb-3" v-for="(publicacion,index) in publicaciones" v-bind:key="index">
-                    <Publicacion
-                            id="publicacion"
-                            :idPublicacion="publicacion._id"
-                            :titulo="publicacion.titulo"
-                            :descripcion="publicacion.descripcion"
-                            :fechaSubida="publicacion.fechaSubida"
-                            :horaSubida="publicacion.horaSubida"
-                            :subidoPor="publicacion.subidoPor"
-                            :imagen="`${publicPath}img/uploads/${publicacion.nombre}`"
-                            @quitar-publicacion-feed="quitarPublicacionFeed"
-                    />
+                <Publicacion
+                        id="publicacion"
+                        :idPublicacion="publicacion._id"
+                        :titulo="publicacion.titulo"
+                        :descripcion="publicacion.descripcion"
+                        :fechaSubida="publicacion.fechaSubida"
+                        :horaSubida="publicacion.horaSubida"
+                        :subidoPor="publicacion.subidoPor"
+                        :imagen="`${publicPath}img/uploads/${publicacion.nombre}`"
+                        @quitar-publicacion-feed="quitarPublicacionFeed"
+                />
             </div>
         </div>
+        <v-btn fab dark fixed bottom right v-bind:color="'#F50057'" @click="irASubirImagen"><font-awesome-icon icon="plus"/></v-btn>
         <div class="col-lg-12 pt-5 text-center" v-if="hasNextPage">
             <v-btn  rounded light @click="cargarMas">Ver más</v-btn>
         </div>
@@ -29,7 +30,8 @@
 
     import EmptyFeed from "./EmptyState";
     import Publicacion from "./Publicacion";
-    import PublicacionesService from '../service/Publicaciones.service'
+    import SearchBar from "./SearchBar";
+    import PublicacionesService from '../service/Publicaciones.service';
 
     export default {
         name: "Feed",
@@ -44,6 +46,7 @@
         components: {
             EmptyFeed,
             Publicacion,
+            SearchBar
         },
         async created () {
             const respuesta = await PublicacionesService.obtenerPublicaciones();
