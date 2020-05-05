@@ -3,7 +3,9 @@
         <div v-if="!buscando">
             <div v-if="publicaciones.length !== 0">
                 <SearchBar
+                        :show="this.showVerTodo"
                         @buscar="buscarPublicaciones"
+                        @ver-todo="obtenerTodasLasPublicaciones"
                 />
                 <Feed
                         :publicaciones="publicaciones"
@@ -16,7 +18,9 @@
             </div>
         </div>
         <div v-else>
-            <SearchingState/>
+            <SearchingState
+                    :mensaje="mensajeSearchingState"
+            />
         </div>
     </div>
 </template>
@@ -34,10 +38,12 @@
             return {
                 publicacionesEncontradas : [],
                 publicaciones: [],
-                buscando: false,
+                buscando: true,
                 nextPage: 0,
                 hasNextPage: false,
-                terminoBusqueda: ''
+                terminoBusqueda: '',
+                showVerTodo: false,
+                mensajeSearchingState: 'Cargando...'
             }
         },
         components: {
@@ -47,17 +53,24 @@
             EmptyState
         },
         async created() {
-            try{
-                const respuesta = await PublicacionesService.obtenerPublicaciones();
-                this.publicaciones = respuesta.data.docs; //usando mongoose pagination
-                this.hasNextPage = respuesta.data.hasNextPage
-                this.nextPage = respuesta.data.nextPage
-            }catch (e) { console.log('Error al obtener publicaciones: ' + e); }
+            await this.obtenerTodasLasPublicaciones();
+            this.buscando = false;
         },
         methods: {
+            async obtenerTodasLasPublicaciones () {
+                try{
+                    const respuesta = await PublicacionesService.obtenerPublicaciones();
+                    this.publicaciones = respuesta.data.docs; //usando mongoose pagination
+                    this.hasNextPage = respuesta.data.hasNextPage;
+                    this.nextPage = respuesta.data.nextPage;
+                    this.terminoBusqueda = '';
+                    this.showVerTodo = false;
+                }catch (e) { console.log('Error al obtener publicaciones: ' + e); }
+            },
             async buscarPublicaciones(terminoBusqueda) {
                 this.terminoBusqueda = terminoBusqueda;
                 this.buscando = true;
+                this.mensajeSearchingState = 'Buscando...'
                 try{
                     const resultados = await PublicacionesService.obtenerBusqueda(terminoBusqueda.trim());
                     console.log(resultados);
@@ -67,6 +80,7 @@
                     this.hasNextPage = resultados.data.hasNextPage
                     this.nextPage = resultados.data.nextPage
                     this.buscando = false;
+                    this.showVerTodo = true;
                 }catch (e) { console.log('Error al buscar publicaciones: ' + e); }
             },
             async cargarMas () {

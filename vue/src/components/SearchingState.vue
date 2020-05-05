@@ -7,7 +7,7 @@
         </div>
         <div class="col-lg-12">
             <div class="text-center">
-                <h4>Buscando...</h4>
+                <h4>{{mensaje}}</h4>
             </div>
         </div>
     </div>
@@ -18,6 +18,12 @@
         name: "SearchingState",
         data () {
             return {}
+        },
+        props: {
+            mensaje: {
+                type: String,
+                required: true,
+            }
         },
         watch: {},
         methods: {}
