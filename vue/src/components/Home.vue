@@ -36,7 +36,8 @@
                 publicaciones: [],
                 buscando: false,
                 nextPage: 0,
-                hasNextPage: false
+                hasNextPage: false,
+                terminoBusqueda: ''
             }
         },
         components: {
@@ -55,22 +56,37 @@
         },
         methods: {
             async buscarPublicaciones(terminoBusqueda) {
+                this.terminoBusqueda = terminoBusqueda;
                 this.buscando = true;
                 try{
                     const resultados = await PublicacionesService.obtenerBusqueda(terminoBusqueda.trim());
+                    console.log(resultados);
                     this.publicaciones = resultados.data.docs;
-                    console.log(this.publicacionesEncontradas);
+                    console.log('Publicaciones encontradas')
+                    console.log(this.publicaciones);
+                    this.hasNextPage = resultados.data.hasNextPage
+                    this.nextPage = resultados.data.nextPage
                     this.buscando = false;
                 }catch (e) { console.log('Error al buscar publicaciones: ' + e); }
             },
             async cargarMas () {
+                let respuesta = [];
                 if(this.hasNextPage) {
-                    try{
-                        const respuesta = await PublicacionesService.obtenerSiguientesPublicaciones(this.nextPage);
+                    if(this.terminoBusqueda === ''){
+                        try{
+                            respuesta = await PublicacionesService.obtenerSiguientesPublicaciones(this.nextPage);
+                            this.publicaciones.push.apply(this.publicaciones, respuesta.data.docs);
+                            this.hasNextPage = respuesta.data.hasNextPage
+                            this.nextPage = respuesta.data.nextPage
+                        }catch (e) { console.log('Error al cargar publicaciones' + e); }
+                    }else{
+                        respuesta = await PublicacionesService.obtenerBusquedaSiguiente(this.terminoBusqueda, this.nextPage);
+                        console.log(respuesta);
                         this.publicaciones.push.apply(this.publicaciones, respuesta.data.docs);
                         this.hasNextPage = respuesta.data.hasNextPage
                         this.nextPage = respuesta.data.nextPage
-                    }catch (e) { console.log('Error al cargar publicaciones' + e); }
+                        console.log('Buscar más pero por el termino de busqueda!!!');
+                    }
                 }
             },
         }
