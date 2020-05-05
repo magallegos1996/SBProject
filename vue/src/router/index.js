@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import SubirFoto from "../components/SubirFoto";
-import Feed from "../components/Feed";
+import Home from "../components/Home"
 import Login from "../components/Login";
 import { AuthService } from '../service/auth.service';
 import Modal from "../components/Modal";
@@ -17,9 +17,9 @@ const router = new VueRouter({
       component: SubirFoto,
     },
     {
-      path: '/feed',
-      name: 'Feed',
-      component: Feed
+      path: '/home',
+      name: 'Home',
+      component: Home
     },
     {
       path: '/login',
@@ -43,7 +43,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.fullPath === '/feed'){
+  if (to.fullPath === '/home'){
     if(!AuthService.isAuth()){
       next('/login');
     }
@@ -55,7 +55,7 @@ router.beforeEach((to, from, next) => {
   }
   if (to.fullPath === '/login'){
     if(AuthService.isAuth()){
-      next('/feed');
+      next('/home');
     }
   }
   //Si requiere ir  / estando en cualquier pagina verifica si está autenticado. Si lo esta eliminar la autenticacion. De esta manera debera insertar de nuevo Stefania Burneo

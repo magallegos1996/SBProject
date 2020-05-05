@@ -11,6 +11,11 @@ export default  {
             return Api().get(Api().getUri() + '/feed/' + page );
         }catch (e) { console.log(e) }
     },
+    obtenerBusqueda (find){
+        try{
+            return Api().get(Api().getUri() + '/feed/find/' + find );
+        }catch (e) { console.log(e) }
+    },
     subirImagen (formData) {
         try{
             return Api().post(Api().getUri() + '/subir-imagen', formData);

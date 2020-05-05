@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="col-lg-12 pr-5">
-            <v-btn fab dark fixed top left slot="activator" v-bind:color="'#00BFA6'" @click="irAFeed"><font-awesome-icon icon="arrow-left"/></v-btn>
+            <v-btn fab dark fixed top left slot="activator" v-bind:color="'#00BFA6'" @click="irAHome"><font-awesome-icon icon="arrow-left"/></v-btn>
         </div>
         <div class="col-lg-4 offset-lg-4">
             <form enctype="multipart/form-data" @submit.prevent="subirImagen">
@@ -114,7 +114,7 @@
 
                 try{
                     await PublicacionesService.insertarPublicacion(this.objImagen);
-                    this.irAFeed(); //Se redirecciona a la pagina FEED
+                    this.irAHome(); //Se redirecciona a la pagina FEED
 
                 }catch (e) { console.log('Error al subir la publicación: ' + e)}
             },
@@ -139,10 +139,10 @@
                     this.error = 'No ha seleccionado ninguna imagen';
                 }
             },
-            async irAFeed (){
+            async irAHome (){
                 const respuesta = await PublicacionesService.obtenerPublicaciones();
                 this.publicaciones = respuesta.data;
-                this.$router.push('feed');
+                this.$router.push('home');
             },
             obtenerFechaYHora(){
                 let fechaYHora = [];

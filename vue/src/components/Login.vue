@@ -54,14 +54,14 @@
                 }
             },
             autenticar(){
-                localStorage.setItem('LoggedUser', this.nombreIngresado);
+                localStorage.setItem('LogUser', this.nombreIngresado);
                 this.cargarPublicaciones();
             },
             async cargarPublicaciones () {
                 try{
                     const respuesta = await PublicacionesService.obtenerPublicaciones();
                     this.publicaciones = respuesta.data;
-                    this.$router.push('feed'); //Se redirecciona a la pagina FEED
+                    this.$router.push('home'); //Se redirecciona a la pagina FEED
                 }catch (e) {
                     console.log(e)
                 }

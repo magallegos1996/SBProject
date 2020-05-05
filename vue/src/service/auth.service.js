@@ -1,7 +1,7 @@
 const AuthService = {
     isAuth(){
         let estaAutenticado= false;
-        estaAutenticado = !!localStorage.getItem('LoggedUser');
+        estaAutenticado = !!localStorage.getItem('LogUser');
 
         return estaAutenticado;
     },

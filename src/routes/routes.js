@@ -13,6 +13,13 @@ router.get('/feed/:page', (req, res) => {
         res.send(imagenes)
     });
 });
+router.get('/feed/find/:find', (req, res) => {
+    const termino = req.params.find;
+    console.log(termino);
+    Imagen.paginate({titulo: {$regex: '.*' + termino + '.*', $options: 'i'}}, { page:1, limit: 6, sort: { _id: -1 } }).then((imagenes) => {
+        res.send(imagenes)
+    });
+});
 router.post('/subir-imagen', (req, res)=>{
     res.json({file: req.file});
 });

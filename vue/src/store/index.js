@@ -1,16 +1,20 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import createPersistedState from 'vuex-persistedstate';
+//import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        publicaciones: []
+        publicaciones: [],
+        loading: false,
     },
     getters: {
         publicaciones: state => {
             return state.publicaciones;
+        },
+        loading: state => {
+            return state.loading;
         }
     },
     mutations: {
@@ -19,10 +23,13 @@ export default new Vuex.Store({
         },
         eliminarPublicaciones (state, publicaciones) {
           state.publicaciones = publicaciones;
-        }
+        },
+        cambiarLoading (state, loading) {
+            state.loading = loading
+        },
     },
     actions: {},
-    plugins: [createPersistedState({
+    /*plugins: [createPersistedState({
         storage: window.sessionStorage,
-    })], //importante para que, cuando el usuario refresque la página, se mantengan las publicaciones en el Feed
+    })],*/ //importante para que, cuando el usuario refresque la página, se mantengan las publicaciones en el Feed
 });
