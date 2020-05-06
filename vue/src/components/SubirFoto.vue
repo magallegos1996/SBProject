@@ -32,15 +32,18 @@
                     </div>
                 </div>
             </form>
-
         </div>
+        <Notificacion ref="notificacion"
+                      :mensaje="mensajeNotificacion"
+        />
     </div>
 </template>
 
 <script>
 
     import Imagen from '../models/Imagen';
-    import dateFormat from 'dateformat'
+    import Notificacion from "./Notificacion";
+    import dateFormat from 'dateformat';
     import { AuthService } from "../service/auth.service";
     import PublicacionesService from '../service/Publicaciones.service'
 
@@ -58,9 +61,12 @@
                 objImagen: new Imagen(),
                 archivoImagen: '',
                 estaAutenticado: false,
+                mensajeNotificacion: '',
             }
         },
-        components: {},
+        components: {
+            Notificacion,
+        },
         mounted() {
             if(AuthService.isAuth()){
                 this.estaAutenticado = true;
@@ -93,13 +99,11 @@
                         try {
                             const imagenGuardada = await PublicacionesService.subirImagen(formData);
                             this.subirPublicacion(imagenGuardada);
-                        }catch (e) { console.log('No se pudo subir la imagen: ' + e); }
-
+                        }catch (e) { console.log('No se pudo subir la imagen: ' + e); this.mostrarNotificacion('error'); }
                     }
                 }
             },
             async subirPublicacion(imagenGuardada){
-
                  console.log(imagenGuardada.data.file);
                 //Construccion objeto
                 this.objImagen.titulo = this.tituloIngresado.trim();
@@ -114,16 +118,14 @@
 
                 try{
                     await PublicacionesService.insertarPublicacion(this.objImagen);
-                    this.irAHome(); //Se redirecciona a la pagina FEED
-
-                }catch (e) { console.log('Error al subir la publicación: ' + e)}
+                    this.mostrarNotificacion('exito');
+                }catch (e) { console.log('Error al subir la publicación: ' + e); this.mostrarNotificacion('error')}
             },
             validarArchivo(file) {
                 //Validar si es imagen jpg o jpeg
                 if(file){
                     const MAX_SIZE = 20000000; //bytes;
                     console.log(file.size);
-
                     if(!this.formatosValidos.includes(file.type)){
                         this.error = 'Solo puedes subir imágenes';
                         return false;
@@ -140,14 +142,22 @@
                 }
             },
             async irAHome (){
-                const respuesta = await PublicacionesService.obtenerPublicaciones();
-                this.publicaciones = respuesta.data;
+                await PublicacionesService.obtenerPublicaciones();
                 this.$router.push('home');
             },
             obtenerFechaYHora(){
                 let fechaYHora = [];
                 fechaYHora = [dateFormat(new Date(), 'mediumDate'), dateFormat(new Date(), 'shortTime')];
                 return fechaYHora;
+            },
+            mostrarNotificacion(tipo){
+                if(tipo === 'exito'){
+                    this.mensajeNotificacion = 'La publicación se ha guardado';
+                    this.$refs.notificacion.showNotificacionUploaded()
+                }else{
+                    this.mensajeNotificacion = 'Algo salió mal. Inténtalo de nuevo';
+                    this.$refs.notificacion.showNotificacionError()
+                }
             },
         }
     }
@@ -200,11 +210,5 @@
     }
     #tituloImagen{
         font-weight: bold;
-    }
-    #irFeed {
-        background-color: #00BFA6;
-    }
-    #irFeed:hover {
-        box-shadow: 5px 10px 13px #999;
     }
 </style>
