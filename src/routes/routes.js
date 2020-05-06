@@ -15,6 +15,18 @@ router.get('/feed/:page', (req, res) => {
         res.send(imagenes)
     });
 });
+//Obtener publicación por id
+router.get('/publicacion/:id', (req, res) => {
+    const idPublicacion = req.params.id;
+    Imagen.findById(idPublicacion)
+        .then((imagen) => {
+            if(imagen){
+                console.log(imagen);
+                res.send(imagen);
+            }else {res.json({ status: 'No se encontró la publicacion', })}
+        })
+        .catch((e) => console.log('Error al obtener la publicacion: ' + e))
+})
 //Buscar publicaciones con paginacion
 router.get('/feed/find/:find', (req, res) => {
     const termino = req.params.find;

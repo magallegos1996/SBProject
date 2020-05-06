@@ -110,7 +110,7 @@
                 this.objImagen.descripcion = this.descripcionIngresada.trim();
                 this.objImagen.fechaSubida = this.obtenerFechaYHora()[0];
                 this.objImagen.horaSubida = this.obtenerFechaYHora()[1];
-                this.objImagen.subidoPor = localStorage.getItem('LoggedUser');
+                this.objImagen.subidoPor = localStorage.getItem('LogUser');
 
                 try{
                     await PublicacionesService.insertarPublicacion(this.objImagen);

@@ -3,8 +3,8 @@ import VueRouter from 'vue-router'
 import SubirFoto from "../components/SubirFoto";
 import Home from "../components/Home"
 import Login from "../components/Login";
+import DetallePublicacion from "../components/DetallePublicacion";
 import { AuthService } from '../service/auth.service';
-import Modal from "../components/Modal";
 
 Vue.use(VueRouter);
 
@@ -31,13 +31,13 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/modal',
-      name: 'Modal',
-      component: Modal
+      path: '/publicacion/:id',
+      name: 'DetallePublicacion',
+      component: DetallePublicacion
     },
     {
       path: '*',
-      redirect: '/feed'
+      redirect: '/home'
     },
   ],
 });
@@ -54,6 +54,11 @@ router.beforeEach((to, from, next) => {
     }
   }
   if (to.fullPath === '/login'){
+    if(AuthService.isAuth()){
+      next('/home');
+    }
+  }
+  if (to.fullPath === '/publicacion'){
     if(AuthService.isAuth()){
       next('/home');
     }

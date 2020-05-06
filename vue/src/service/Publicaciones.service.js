@@ -1,6 +1,11 @@
 import Api from '../service/Api.service'
 
 export default  {
+    obtenerPublicacionPorId (id) {
+        try{
+            return Api().get(Api().getUri() + '/publicacion/' + id);
+        }catch (e) { console.log(e); }
+    },
     obtenerPublicaciones () {
         try{
             return Api().get(Api().getUri() + '/feed');

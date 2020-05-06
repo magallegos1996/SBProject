@@ -9,8 +9,7 @@
             <v-card-subtitle id="fechaHora" class="text-muted text-right">{{fechaSubida}} {{horaSubida}}</v-card-subtitle>
         </div>
         <v-card-actions>
-            <v-btn :color="'#7776BC'" text @click="mostrarModalEliminacion">Comentar</v-btn>
-            <v-btn :color="'#b20d30'" text @click="mostrarModalEliminacion">Eliminar</v-btn>
+            <v-btn :color="'#006BA6'" text @click="abrirPublicacion">Abrir publicación</v-btn>
             <v-spacer></v-spacer>
             <v-btn icon @click="show = !show">
                 <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
@@ -30,18 +29,14 @@
         <Modal ref="modal"
                :idPublicacion="idPublicacion"
                :imagen="imagen"
-               :titulo="titulo"
-               :subidoPor="subidoPor"
                :tipo-modal="tipoModal"
                :mensaje-modal="mensajeModal"
-               @eliminar-publicacion="eliminarPublicacion"
         />
     </v-card>
 </template>
 
 <script>
     import Modal from "./Modal";
-    import PublicacionService from '../service/Publicaciones.service'
 
     export default {
         name: "Publicacion",
@@ -72,21 +67,9 @@
                 this.mensajeModal = '';
                 this.$refs.modal.showModalMostrarImagen(); //Con refs se esta ejecutando el metodo showModal del componente Modal
             },
-            mostrarModalEliminacion(){
-                this.tipoModal= 'eliminarImagen';
-                this.mensajeModal = '¿Seguro que quieres eliminar esta publicación?';
-                this.$refs.modal.showModalEliminarPublicacion();
+            abrirPublicacion(){
+                this.$router.push('publicacion/' + this.idPublicacion);
             },
-            async eliminarPublicacion(publcacion){
-                try{
-                    const resultado = await PublicacionService.eliminarPublicacion(publcacion.idPublicacionAEliminar);
-                    //Emitir publicacion eliminada a FEED COMPONENT
-                    const publicacionEliminada = resultado.data;
-                    console.log('PUBLCACION ELIMINADA EN PUBLICACION');
-                    console.log(publicacionEliminada);
-                    this.$emit('quitar-publicacion-feed', publicacionEliminada);
-                }catch (e) { console.log('Error al eliminar la publicacion: ' + e) }
-            }
         }
     }
 </script>

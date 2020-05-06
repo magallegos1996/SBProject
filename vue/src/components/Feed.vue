@@ -64,6 +64,7 @@
             quitarPublicacionFeed (publicacionEliminada) {
                 const index = this.publicaciones.findIndex(publicacion => publicacion._id === publicacionEliminada._id);
                 this.publicaciones.splice(index, 1);
+                this.$router.push('home');
             },
         }
     }

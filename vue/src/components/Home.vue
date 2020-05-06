@@ -54,7 +54,6 @@
         },
         async created() {
             await this.obtenerTodasLasPublicaciones();
-            this.buscando = false;
         },
         methods: {
             async obtenerTodasLasPublicaciones () {
@@ -65,6 +64,7 @@
                     this.nextPage = respuesta.data.nextPage;
                     this.terminoBusqueda = '';
                     this.showVerTodo = false;
+                    this.buscando = false;
                 }catch (e) { console.log('Error al obtener publicaciones: ' + e); }
             },
             async buscarPublicaciones(terminoBusqueda) {
