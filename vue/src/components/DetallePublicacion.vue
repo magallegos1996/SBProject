@@ -48,6 +48,9 @@
                :mensaje-modal="mensajeModal"
                @guardar-comentario="guardarComentario"
         />
+        <Notificacion ref="notificacion"
+                      :mensaje="mensajeNotificacion"
+        />
     </div>
 </template>
 
@@ -56,6 +59,7 @@
     import PublicacionesService from '../service/Publicaciones.service';
     import ComentariosService from '../service/Comentarios.service';
     import Comentario from "./Comentario";
+    import Notificacion from "./Notificacion";
     import Modal from "./Modal";
 
     export default {
@@ -63,10 +67,11 @@
         data(){
             return {
                 publicacion: {},
+                imagen: '',
                 publicPath: process.env.BASE_URL,
                 tipoModal: '',
                 mensajeModal: '',
-                imagen: '',
+                mensajeNotificacion: '',
             }
         },
         async created() {
@@ -74,7 +79,8 @@
         },
         components: {
             Modal,
-            Comentario
+            Comentario,
+            Notificacion
         },
         methods: {
             irAHome(){
@@ -97,6 +103,15 @@
                 this.mensajeModal = 'COMENTAR PUBLICACIÓN';
                 this.$refs.modal.showModalComentarPublicacion();
             },
+            mostrarNotificacion(tipo){
+                if(tipo === 'exito'){
+                    this.mensajeNotificacion = 'El comentario se ha guardado';
+                    this.$refs.notificacion.showNotificacionExito()
+                }else{
+                    this.mensajeNotificacion = 'Algo salió mal. Inténtalo de nuevo';
+                    this.$refs.notificacion.showNotificacionError()
+                }
+            },
             async guardarComentario(comentario){
                 console.log(comentario);
                 const datos = {
@@ -107,12 +122,14 @@
                         avatar: `${this.publicPath}icons/no-avatar-png-5.png`
                     }
                 };
-              try{
-                  const resultado = await ComentariosService.insertarComentario(datos);
-                  const comentarioInsertado = resultado.data;
-                  console.log('COMENTARIO INSERTADO');
-                  console.log(comentarioInsertado);
-              }catch (e) { console.log('Error al guardar el comentario: ' + e) }
+                try{
+                    const resultado = await ComentariosService.insertarComentario(datos);
+                    const comentarioInsertado = resultado.data;
+                    console.log('COMENTARIO INSERTADO');
+                    console.log(comentarioInsertado);
+                    this.publicacion.comentarios.push(datos.comentario);
+                    this.mostrarNotificacion('exito');
+                }catch (e) { console.log('Error al guardar el comentario: ' + e); this.mostrarNotificacion('error'); }
             },
             async eliminarPublicacion(publcacion){
                 try{
