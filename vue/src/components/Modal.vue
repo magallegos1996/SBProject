@@ -19,21 +19,14 @@
                             <v-container>
                                 <v-row>
                                     <v-col cols="12">
-                                        <v-textarea
-                                                label="Comentar"
-                                                auto-grow
-                                                outlined
-                                                rows="3"
-                                                row-height="30"
-                                                shaped
-                                        ></v-textarea>
+                                        <v-textarea v-model="comentarioIngresado" label="Comentar" auto-grow outlined rows="3" row-height="30" shaped></v-textarea>
                                     </v-col>
                                 </v-row>
                             </v-container>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" text @click="dialog = false">Guardar</v-btn>
+                            <v-btn color="blue darken-1" text @click="guardarComentario">Guardar</v-btn>
                             <v-btn :color="'#b20d30'" text @click="dialog = false">Cancelar</v-btn>
                         </v-card-actions>
                     </v-card>
@@ -87,6 +80,7 @@
         data () {
             return {
                 dialog: false,
+                comentarioIngresado: '',
             }
         },
         props:{
@@ -111,6 +105,10 @@
             },
             showModalMostrarComentario(){
                 this.dialog = true;
+            },
+            guardarComentario(){
+              this.dialog = false;
+              this.$emit('guardar-comentario', this.comentarioIngresado);
             },
             eliminarPublicacion(){
                 this.dialog = false;

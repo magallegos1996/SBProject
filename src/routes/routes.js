@@ -52,10 +52,21 @@ router.post('/subir-imagen', (req, res)=>{
 //Subir publicacion
 router.post('/feed', (req, res)=>{
     const imagen = new Imagen(req.body);
-    imagen.save().then(r => console.log(r)).catch(e => console.log(e));
-    res.json({
-        status: 'Imagen guardada'
-    });
+    imagen.save().then(r => {
+        console.log(r);
+        res.json({
+            status: 'Imagen guardada'
+        });
+    }).catch(e => console.log(e));
+});
+//Insertar comentario
+router.post('/comentario', (req, res) => {
+    Imagen.findById(req.body.idPublicacion).then((imagen) => {
+            if(imagen){
+                imagen.comentarios.push(req.body.comentario);
+                imagen.save().then((r) => {console.log(r)}).catch(e => console.log('Error al insertar comentario') + e)
+            }else {res.json({ status: 'No se encontró la publicacion de la cual se quiere insertar el comentario', })}
+        }).catch((e) => console.log('Error al obtener la publicacion de la cual se quiere insertar el comentario: ' + e))
 });
 //Eliminar publicacion
 router.delete('/publicacion/:id', (req, res) => {

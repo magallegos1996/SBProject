@@ -27,7 +27,9 @@
                                 <v-row class="ma-0 mt-3" v-else>
                                     <v-card-text id="descripcion" class="text-muted">No hay una descripción disponible</v-card-text>
                                 </v-row>
-                                <Comentario/>
+                                <Comentario
+                                        :comentarios="publicacion.comentarios"
+                                />
                                 <v-card-actions class="flex-column-reverse">
                                     <div>
                                         <v-btn text small color="primary" @click="mostrarModalComentar">Comentar</v-btn>
@@ -44,6 +46,7 @@
                :idPublicacion="publicacion._id"
                :tipo-modal="tipoModal"
                :mensaje-modal="mensajeModal"
+               @guardar-comentario="guardarComentario"
         />
     </div>
 </template>
@@ -51,6 +54,7 @@
 <script>
 
     import PublicacionesService from '../service/Publicaciones.service';
+    import ComentariosService from '../service/Comentarios.service';
     import Comentario from "./Comentario";
     import Modal from "./Modal";
 
@@ -92,6 +96,23 @@
                 this.tipoModal = 'comentarImagen';
                 this.mensajeModal = 'COMENTAR PUBLICACIÓN';
                 this.$refs.modal.showModalComentarPublicacion();
+            },
+            async guardarComentario(comentario){
+                console.log(comentario);
+                const datos = {
+                    idPublicacion: this.publicacion._id,
+                    comentario: {
+                        nombre: localStorage.getItem('LogUser'),
+                        comentario: comentario,
+                        avatar: `${this.publicPath}icons/no-avatar-png-5.png`
+                    }
+                };
+              try{
+                  const resultado = await ComentariosService.insertarComentario(datos);
+                  const comentarioInsertado = resultado.data;
+                  console.log('COMENTARIO INSERTADO');
+                  console.log(comentarioInsertado);
+              }catch (e) { console.log('Error al guardar el comentario: ' + e) }
             },
             async eliminarPublicacion(publcacion){
                 try{

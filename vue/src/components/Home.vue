@@ -60,6 +60,7 @@
                 try{
                     const respuesta = await PublicacionesService.obtenerPublicaciones();
                     this.publicaciones = respuesta.data.docs; //usando mongoose pagination
+                    console.log(this.publicaciones);
                     this.hasNextPage = respuesta.data.hasNextPage;
                     this.nextPage = respuesta.data.nextPage;
                     this.terminoBusqueda = '';

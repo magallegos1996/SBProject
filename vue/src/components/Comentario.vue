@@ -31,7 +31,6 @@
         </div>
     </div>
 </template>
-
 <script>
 
     import Modal from "./Modal";
@@ -45,42 +44,17 @@
                 mensajeModal: '',
                 avatar: '',
                 nombre: '',
-                comentarios: [
-                    {
-                        nombre: 'Marcelo Gallegos',
-                        comentario: 'El 16 de marzo pasado, el Ejecutivo decretó el estado de excepción para enfrentar la propagación del coronavirus en el país. De acuerdo con el constitucionalista Jorge Benavides, el Gobierno podía decretarlo por 60 días y recurrir a una prórroga de 30 días más; es decir 90 días en total.',
-                        avatar: `${process.env.BASE_URL}icons/no-avatar-png-5.png`
-                    },
-                    {
-                        nombre: 'Stefania Burneo',
-                        comentario: 'Benavides indicó que esta decisión tendrá que ser puesta en conocimiento de la Corte Constitucional. La entidad, el pasado 20 de marzo ya dictaminó la constitucionalidad del decreto.',
-                        avatar: `${process.env.BASE_URL}icons/no-avatar-png-5.png`
-                    },
-                    {
-                        nombre: 'Marcelo Gallegos',
-                        comentario: 'El presidente Moreno anunció revisiones presupuestarias de entre el 10% y el 15% como parte de esa reingeniería. “Hasta el 30 de mayo todos deberemos adoptar las medidas que correspondan, de conformidad con la Constitución y las leyes, con el acompañamiento del Ministerio de Finanzas”, indicó',
-                        avatar: `${process.env.BASE_URL}icons/no-avatar-png-5.png`
-                    },
-                    {
-                        nombre: 'Marcelo Gallegos',
-                        comentario: 'El presidente Moreno anunció revisiones presupuestarias de entre el 10% y el 15% como parte de esa reingeniería. “Hasta el 30 de mayo todos deberemos adoptar las medidas que correspondan, de conformidad con la Constitución y las leyes, con el acompañamiento del Ministerio de Finanzas”, indicó',
-                        avatar: `${process.env.BASE_URL}icons/no-avatar-png-5.png`
-                    },
-                    {
-                        nombre: 'Stefania Burneo',
-                        comentario: 'El próximo 15 de mayo terminará el plazo con el que el Gobierno cuenta para actuar bajo las condiciones que le permite la Constitución en medio de un estado de excepción.',
-                        avatar: `${process.env.BASE_URL}icons/no-avatar-png-5.png`
-                    },
-                    {
-                        nombre: 'Stefania Burneo',
-                        comentario: 'El próximo 15 de mayo terminará el plazo con el que el Gobierno cuenta para actuar bajo las condiciones que le permite la Constitución en medio de un estado de excepción.',
-                        avatar: `${process.env.BASE_URL}icons/no-avatar-png-5.png`
-                    }
-                ],
             }
         },
         components:{
             Modal
+        },
+        props: {
+            comentarios:{
+                type: Array,
+                required: true,
+                default: () => [],
+            }
         },
         methods:{
             mostrarComentario(index){

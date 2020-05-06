@@ -1,5 +1,6 @@
 const mongoose = require ('mongoose');
 const {Schema} = require('mongoose');
+const Comentario = require('../models/Comentario');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 const Imagen = new Schema({
@@ -11,7 +12,8 @@ const Imagen = new Schema({
     descripcion: String,
     fechaSubida: String,
     horaSubida: String,
-    subidoPor: String
+    subidoPor: String,
+    comentarios: [Comentario]
 });
 
 Imagen.plugin(mongoosePaginate);
