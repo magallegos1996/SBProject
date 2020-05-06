@@ -41,6 +41,29 @@
             </v-row>
         </v-dialog>
     </v-row>
+    <v-row v-else-if="tipoModal === 'mostrarComentario'" justify="center">
+        <v-dialog v-model="dialog" width="400">
+            <v-card class="mx-auto" max-height="600">
+                <v-card-title class="headline">
+                    <div class="row">
+                        <div class="col-2 text-center mr-3">
+                            <v-avatar>
+                                <img :src="avatar" alt="John">
+                            </v-avatar>
+                        </div>
+                        <div class="col mt-2">
+                            <h4>{{nombre}} dice:</h4>
+                        </div>
+                    </div>
+                </v-card-title>
+                <v-card-text>{{mensajeModal}}</v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn :color="'#1ABC9C'" text @click="dialog = false">Aceptar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </v-row>
     <v-row v-else justify="center">
         <v-dialog v-model="dialog" width="400">
             <v-card class="mx-auto" max-height="600">
@@ -72,7 +95,9 @@
             titulo: String,
             subidoPor: String,
             tipoModal: String,
-            mensajeModal: String
+            mensajeModal: String,
+            avatar: String,
+            nombre: String,
         },
         methods: {
             showModalMostrarImagen() {
@@ -82,6 +107,9 @@
                 this.dialog = true;
             },
             showModalComentarPublicacion(){
+                this.dialog = true;
+            },
+            showModalMostrarComentario(){
                 this.dialog = true;
             },
             eliminarPublicacion(){
@@ -95,6 +123,8 @@
         }
     }
 </script>
-
 <style scoped>
+    h4{
+        font-size: medium;
+    }
 </style>
