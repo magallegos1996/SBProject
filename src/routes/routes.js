@@ -111,5 +111,15 @@ router.delete('/feed', (req, res)=>{
             })
         }).catch(e => console.log(e));
 });
+//Eliminar todos los usuarios
+router.delete('/usuario', (req, res)=>{
+    Usuario.remove({})
+        .then((resultado) => {
+            console.log(resultado);
+            res.json({
+                status: 'USUARIOS ELIMINADOS'
+            })
+        }).catch(e => console.log(e));
+});
 
 module.exports = router;

@@ -77,8 +77,6 @@
                 //Validar si es imagen jpg o jpeg
                 if(file){
                     const MAX_SIZE = 20000000; //bytes;
-                    console.log('SIZE:');
-                    console.log(file.size);
                     if(!this.formatosValidos.includes(file.type)){
                         this.error = 'Solo puedes subir imágenes';
                         return false;
@@ -113,8 +111,7 @@
                 const usuarioAInsertar = new Usuario();
                 //SE CONSTRUYE OBJETO DE USUARIO A INSERTAR
                 usuarioAInsertar.nombre = this.nombreUsuario;
-                usuarioAInsertar.avatarPath = fotoPerfil.data.file.path;
-
+                usuarioAInsertar.avatarPath = fotoPerfil.data.file.filename;
                 try{
                     await UsuarioService.insertarUsuario(usuarioAInsertar);
                     this.$emit('usuario-registrado', usuarioAInsertar.nombre);

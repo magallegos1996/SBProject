@@ -59,6 +59,7 @@
 
     import PublicacionesService from '../service/Publicaciones.service';
     import ComentariosService from '../service/Comentarios.service';
+    import Usuario from '../service/Usuario.service'
     import Comentario from "./Comentario";
     import Notificacion from "./Notificacion";
     import Modal from "./Modal";
@@ -113,14 +114,18 @@
                     this.$refs.notificacion.showNotificacionError()
                 }
             },
+            async obtenerUsuario(){
+                const resultado = await Usuario.obtenerUsuario(localStorage.getItem('LogUser'))
+                return resultado.data;
+            },
             async guardarComentario(comentario){
-                console.log(comentario);
+                const usuario = await this.obtenerUsuario();
                 const datos = {
                     idPublicacion: this.publicacion._id,
                     comentario: {
-                        nombre: localStorage.getItem('LogUser'),
+                        nombre: usuario.nombre,
                         comentario: comentario,
-                        avatar: `${this.publicPath}icons/no-avatar-png-5.png`
+                        avatar: `${this.publicPath}img/uploads/${usuario.avatarPath}`
                     }
                 };
                 try{
@@ -132,9 +137,9 @@
                     this.mostrarNotificacion('exito');
                 }catch (e) { console.log('Error al guardar el comentario: ' + e); this.mostrarNotificacion('error'); }
             },
-            async eliminarPublicacion(publcacion){
+            async eliminarPublicacion(publicacion){
                 try{
-                    const resultado = await PublicacionesService.eliminarPublicacion(publcacion.idPublicacionAEliminar);
+                    const resultado = await PublicacionesService.eliminarPublicacion(publicacion.idPublicacionAEliminar);
                     const publicacionEliminada = resultado.data;
                     console.log('PUBLICACION ELIMINADA EN PUBLICACION');
                     console.log(publicacionEliminada);

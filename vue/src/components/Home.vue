@@ -74,10 +74,7 @@
                 this.mensajeSearchingState = 'Buscando...'
                 try{
                     const resultados = await PublicacionesService.obtenerBusqueda(terminoBusqueda.trim());
-                    console.log(resultados);
                     this.publicaciones = resultados.data.docs;
-                    console.log('Publicaciones encontradas')
-                    console.log(this.publicaciones);
                     this.hasNextPage = resultados.data.hasNextPage
                     this.nextPage = resultados.data.nextPage
                     this.buscando = false;
