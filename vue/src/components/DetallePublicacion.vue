@@ -47,6 +47,7 @@
                :tipo-modal="tipoModal"
                :mensaje-modal="mensajeModal"
                @guardar-comentario="guardarComentario"
+               @eliminar-publicacion="eliminarPublicacion"
         />
         <Notificacion ref="notificacion"
                       :mensaje="mensajeNotificacion"
@@ -137,8 +138,8 @@
                     const publicacionEliminada = resultado.data;
                     console.log('PUBLICACION ELIMINADA EN PUBLICACION');
                     console.log(publicacionEliminada);
-                    await this.$router.push('home');
-                }catch (e) { console.log('Error al eliminar la publicacion: ' + e) }
+                    await this.$router.push('/home');
+                }catch (e) { console.log('Error al eliminar la publicacion: ' + e); this.mostrarNotificacion('error') }
             }
         }
     }

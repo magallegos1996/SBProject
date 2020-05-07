@@ -11,7 +11,6 @@
                         :horaSubida="publicacion.horaSubida"
                         :subidoPor="publicacion.subidoPor"
                         :imagen="`${publicPath}img/uploads/${publicacion.nombre}`"
-                        @quitar-publicacion-feed="quitarPublicacionFeed"
                 />
             </div>
         </div>
@@ -61,11 +60,11 @@
             cargarMas () {
                 this.$emit('cargar-mas');
             },
-            quitarPublicacionFeed (publicacionEliminada) {
+            /*quitarPublicacionFeed (publicacionEliminada) {
                 const index = this.publicaciones.findIndex(publicacion => publicacion._id === publicacionEliminada._id);
                 this.publicaciones.splice(index, 1);
                 this.$router.push('home');
-            },
+            }*/
         }
     }
 </script>

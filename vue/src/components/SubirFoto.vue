@@ -98,7 +98,7 @@
                         formData.append('imagenASubir', this.archivoImagen);
                         try {
                             const imagenGuardada = await PublicacionesService.subirImagen(formData);
-                            this.subirPublicacion(imagenGuardada);
+                            await this.subirPublicacion(imagenGuardada);
                         }catch (e) { console.log('No se pudo subir la imagen: ' + e); this.mostrarNotificacion('error'); }
                     }
                 }
@@ -108,7 +108,6 @@
                 //Construccion objeto
                 this.objImagen.titulo = this.tituloIngresado.trim();
                 this.objImagen.nombre = imagenGuardada.data.file.filename;
-                console.log(process.cwd());
                 this.objImagen.path = imagenGuardada.data.file.path;
                 this.objImagen.tipoImagen = imagenGuardada.data.file.mimetype;
                 this.objImagen.descripcion = this.descripcionIngresada.trim();

@@ -6,7 +6,7 @@
                 {{titulo}}
             </v-card-title>
             <v-card-subtitle class="pb-0"><b>Subido por: </b>{{subidoPor}}</v-card-subtitle>
-            <v-card-subtitle id="fechaHora" class="text-muted text-right">{{fechaSubida}} {{horaSubida}}</v-card-subtitle>
+            <v-card-subtitle id="fechaHora" class="text-muted">{{fechaSubida}} {{horaSubida}}</v-card-subtitle>
         </div>
         <v-card-actions>
             <v-btn :color="'#006BA6'" text @click="abrirPublicacion">Abrir publicación</v-btn>

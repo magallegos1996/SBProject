@@ -1,89 +1,54 @@
 <template>
-    <div class="container pt-3">
-        <div class="row">
-            <div class="col-lg-12">
-                <img class="img-fluid mx-auto d-block" src="../assets/login.svg" alt="Login Ill">
-            </div>
+    <div>
+        <div v-if="usuarioRegistrado">
+            <Credenciales
+                    @validar-usuario="validarUsuario"
+                    :nombreUsuario="nombreUsuario"
+            />
         </div>
-        <div class="row">
-            <div class="col-lg-4 offset-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title text-center text-muted">Ingresa tus credenciales</h5>
-                        <div class="row">
-                            <div class="col">
-                                <label class="text-muted" for="nombreIngreso">Tu nombre</label>
-                                <input v-model="nombreIngresado" type="text" class="form-control" id="nombreIngreso">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <button class="btn btn-primary btn-block" v-on:click="validarNombre">Ingresar</button>
-                                <small class="text-danger text-center"><b>{{error}}</b></small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div v-else>
+            <FotoPerfil
+                    @usuario-registrado="irAHome"
+                    :nombreUsuario="nombreUsuario"
+            />
         </div>
     </div>
 </template>
 
 <script>
-
-    import PublicacionesService from '../service/Publicaciones.service'
+    import Credenciales from "./Credenciales";
+    import FotoPerfil from "./FotoPerfil";
+    import UsuarioSerice from "../service/Usuario.service"
 
     export default {
         name: "Login",
         data () {
             return {
-                nombreIngresado: '',
-                nombresValidos: ['Stefanía Burneo', 'Stefania Burneo', 'Marcelo Gallegos'],
-                publicaciones: [],
-                error: '',
+                nombreUsuario: '',
+                usuarioRegistrado: true,
             }
         },
         components: {
+            Credenciales,
+            FotoPerfil
         },
         methods: {
-            validarNombre() {
-                if(!this.nombresValidos.includes(this.nombreIngresado.trim())){
-                    this.error = 'No es un nombre válido';
+            async validarUsuario(nombreUsuario){
+                const resultado = await UsuarioSerice.obtenerUsuario(nombreUsuario);
+                if(resultado.data !== ''){
+                    await this.irAHome(nombreUsuario)
                 }else{
-                    this.autenticar();
+                    this.nombreUsuario = nombreUsuario
+                    this.usuarioRegistrado = false;
                 }
             },
-            autenticar(){
-                localStorage.setItem('LogUser', this.nombreIngresado);
-                this.cargarPublicaciones();
-            },
-            async cargarPublicaciones () {
-                try{
-                    const respuesta = await PublicacionesService.obtenerPublicaciones();
-                    this.publicaciones = respuesta.data;
-                    this.$router.push('home'); //Se redirecciona a la pagina FEED
-                }catch (e) {
-                    console.log(e)
-                }
+            irAHome(nombreUsuario){
+                localStorage.setItem('LogUser', nombreUsuario);
+                this.$router.push('home');
             }
         }
     }
 </script>
 
 <style scoped>
-    img {
-        width: 300px;
-        height: 300px;
-    }
-    .btn {
-        background-color: #00BFA6;
-        color: white;
-        font-weight: bold;
-        opacity: 0.7;
-        transition: 0.3s;
-        border: none;
-    }
-    .btn:hover {
-        opacity: 1;
-    }
 </style>
